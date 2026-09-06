@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head> <!-- not visible -->
+    <meta charset="UTF-8"> <!--allows normal text characters-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--makes the page behave properly on phones-->
+
+    <title>Build Your Habit</title> <!--the text shown on the browser tab-->
+
+    <link rel="stylesheet" href="style.css"> <!--connects index.html to style.css-->
+</head>
+
+<body>
+
+    <h1>Build Your Habit</h1>
+
+    <p>
+        Build better habits gradually with a personalized plan that adapts to your progress.
+    </p>
+
+    <label for="habit-name">Habit name:</label> 
+
+    <input
+        type="text"
+        id="habit-name"
+        name="habit-name"
+        placeholder="e.g Running" 
+    > <!--the last one is an example text shown inside the empty box-->
+    
+    <label for="target-duration">Target duration in minutes:</label>
+    <input
+        type="number"
+        id="target-duration"
+        placeholder="e.g 40"
+        min="1"
+    >
+
+    <button type="button">Create Habit</button>
+
+    <div id="result">
+    </div>
+    
+</body>
+
+</html>
