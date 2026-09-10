@@ -13,13 +13,14 @@ class DatasetBuilder:
             "duration_goal": duration_goal
         })
 
-    def add_attempt(self, user_id, week, day, planned_duration, actual_duration): # stores one daily-attempt record
+    def add_attempt(self, user_id, week, day, planned_duration, actual_duration, completion): # stores one daily-attempt record
         self.attempts_records.append({
             "user_id": user_id,
             "week": week,
             "day": day,
             "planned_duration": planned_duration,
-            "actual_duration": actual_duration
+            "actual_duration": actual_duration,
+            "completion": completion
         })
 
     def get_users_dataframe(self):

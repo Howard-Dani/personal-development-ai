@@ -15,6 +15,9 @@ class SyntheticDataGenerator:
         return habit_name, duration_goal
         
     def generate_actual_duration(self, planned_duration):
-        actual_duration = random.randint(0, round(planned_duration)) # generates a synthetic actual duration for one day
+        lower_bound = round(planned_duration * 0.5)
+        upper_bound = round(planned_duration * 1.2)
+
+        actual_duration = random.randint(lower_bound, upper_bound) # generates a synthetic actual duration for one day
         return actual_duration
  
