@@ -12,7 +12,9 @@ class DailyAttempt:
         if self.planned_duration == 0:
             return 0
                 
-        return self.actual_duration / self.planned_duration
+        readiness = self.actual_duration / self.planned_duration
+
+        return min(readiness, 1.0)
     
 
 class Habit:
@@ -34,7 +36,9 @@ class Habit:
             return 0
 
         total_readiness = 0
+        
         for attempt in latest_attempts:
             total_readiness += attempt.calculate_daily_readiness()
+
         return total_readiness / len(latest_attempts)
 
