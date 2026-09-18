@@ -6,25 +6,31 @@
 
 ## Project Goal
 
-The long-term goal is to build an AI-assisted personal development and behavioral goal platform that helps users define goals, build routines, track progress, and adapt their plans over time.
+Personal Development AI is a learning and portfolio project focused on building an adaptive habit progression system.
 
-The current version focuses on one part of that larger idea: building and adapting duration-based habits using user progress and machine-learning predictions.
+The current prototype allows users to define a duration-based habit, track daily performance, and adjust future targets using machine-learning predictions and progression rules.
 
 ## Development Approach
 
-This project is being developed iteratively as a learning and portfolio project.
+This project is being developed iteratively.
 
 I use AI-assisted development tools for learning unfamiliar technologies, debugging, code review, and exploring design alternatives while implementing, testing, and refining the project logic myself.
 
 ## Current Version
 
-The current prototype focuses on adaptive habit progression. Users define a habit and a target duration, track their daily performance, and receive an adjusted target for the following week.
+The current prototype focuses on adaptive habit progression.
 
-At this stage, the project includes weekly progress tracking, synthetic user data for development, a machine-learning model that predicts completion rates, a rule-based progression recommender, and an HTML/CSS/JavaScript interface.
+Users define a habit and target duration, record their daily performance, and receive an adjusted target for the following week.
+
+At this stage, the project includes:
+
+- weekly progress tracking
+- synthetic user data for development
+- a machine-learning model that predicts weekly completion rates
+- a rule-based progression recommender
+- an HTML/CSS/JavaScript interface
 
 ## How It Works
-
-The current system follows this flow:
 
 1. The user chooses a habit and target duration.
 2. The user records the actual duration completed each day.
@@ -37,7 +43,7 @@ The current system follows this flow:
 
 The current `CompletionPredictor` uses a Random Forest Regressor from scikit-learn.
 
-The model is currently trained using synthetic behavioral data because real user data is not yet available.
+The model is trained using synthetic behavioral data because real user data is not yet available.
 
 Current model inputs include:
 
@@ -61,7 +67,7 @@ Based on the predicted completion rate, it chooses a progression multiplier:
 - 70%–85% → increase target by 5%
 - above 85% → increase target by 10%
 
-The recommender is intentionally simple at this stage. A future version may learn the progression policy from real user data.
+The recommender is intentionally simple at this stage.
 
 ## Synthetic Data
 
@@ -79,21 +85,46 @@ The synthetic-data system is used as a development and testing environment, not 
 
 ## Web Interface
 
-The frontend is currently being developed with:
+The frontend is being developed with:
 
 - HTML
 - CSS
 - JavaScript
 
-The interface allows the user to enter a habit and target duration, then creates a weekly tracking table for recording the actual duration completed each day.
+The interface currently allows the user to:
 
-At the end of each week, the system is designed to use the recorded progress to calculate and display the recommended target for the following week. New weekly tables can then be added as the user continues tracking progress.
+- enter a habit and target duration
+- generate a weekly tracking table
+- record actual duration for each day
+- complete a week and continue to the next weekly section
+
+The Finish Week button sends the seven daily durations to FastAPI's
+`POST /finish-week` endpoint. Week 1 calibrates the next target from readiness;
+later weeks use the saved `CompletionPredictor` and `ProgressionRecommender`.
+The returned target populates the next weekly table, and readiness is carried
+forward for the next request. Failed requests leave the week available to retry.
+
+### Run the web app
+
+From the repository root, with your Python environment activated:
+
+```bash
+pip install fastapi uvicorn scikit-learn joblib
+uvicorn api:app --reload
+```
+
+Open http://127.0.0.1:8000. FastAPI serves both the frontend and API; do not
+open the HTML directly or use a separate static server. The existing
+`completion_predictor.joblib` must be present in the repository root.
+Progress is held in the page's memory and resets on reload or when creating
+a new habit. No database is used.
 
 ## Project Structure
 
 ```text
 personal-development-ai/
 ├── main.py
+├── api.py
 ├── train_model.py
 ├── ml_models.py
 ├── simulation.py
@@ -105,3 +136,4 @@ personal-development-ai/
 │   └── script.js
 ├── README.md
 └── .gitignore
+```

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head> <!-- not visible -->
-    <meta charset="UTF-8"> <!--allows normal text characters-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--makes the page behave properly on phones-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Build Your Habit</title> <!--the text shown on the browser tab-->
+    <title>Build Your Habit</title>
 
-    <link rel="stylesheet" href="style.css"> <!--connects index.html to style.css-->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -18,34 +18,40 @@
         Build better habits gradually with a personalized plan that adapts to your progress.
     </p>
 
+    <div class="card">
 
-<div class="card">
+        <label for="habit-name">Habit name:</label>
 
-    <label for="habit-name">Habit name:</label> 
+        <input
+            type="text"
+            id="habit-name"
+            name="habit-name"
+            placeholder="e.g Running"
+        >
 
-    <input
-        type="text"
-        id="habit-name"
-        name="habit-name"
-        placeholder="e.g Running" 
-    >
+        <label for="target-duration">
+            Target duration in minutes:
+        </label>
 
-    <label for="target-duration">Target duration in minutes:</label>
+        <input
+            type="number"
+            id="target-duration"
+            placeholder="e.g 40"
+            min="1"
+        >
 
-    <input
-        type="number"
-        id="target-duration"
-        placeholder="e.g 40"
-        min="1"
-    >
+        <button
+            type="button"
+            class="create-habit">
+            Create Habit
+        </button>
 
-    <button type="button">Create Habit</button>
-
-</div>
-    <div id="result">
     </div>
-    
+
+    <div id="result"></div>
+
     <script src="./script.js"></script>
+
 </body>
 
 </html>
