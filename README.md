@@ -1,15 +1,3 @@
-dani-howard@dani-howard-IdeaPad-Slim-3-15IRH8:~/personal-development-ai$ cd ~/personal-development-ai
-dani-howard@dani-howard-IdeaPad-Slim-3-15IRH8:~/personal-development-ai$ git status
-On branch main
-Your branch is up to date with 'origin/main'.
-
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-	api.py
-	requirements.txt
-
-nothing added to commit but untracked files present (use "git add" to track)
-dani-howard@dani-howard-IdeaPad-Slim-3-15IRH8:~/personal-development-ai$ 
 
 # Personal Development AI
 
