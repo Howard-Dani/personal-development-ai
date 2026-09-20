@@ -1,6 +1,17 @@
-# Personal Development AI
+dani-howard@dani-howard-IdeaPad-Slim-3-15IRH8:~/personal-development-ai$ cd ~/personal-development-ai
+dani-howard@dani-howard-IdeaPad-Slim-3-15IRH8:~/personal-development-ai$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
 
-**Dani Howard**
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	api.py
+	requirements.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+dani-howard@dani-howard-IdeaPad-Slim-3-15IRH8:~/personal-development-ai$ 
+
+# Personal Development AI
 
 > **Work in Progress**
 
@@ -8,128 +19,110 @@
 
 Personal Development AI is a learning and portfolio project focused on building an adaptive habit progression system.
 
-The current prototype allows users to define a duration-based habit, track daily performance, and adjust future targets using machine-learning predictions and progression rules.
+The application allows a user to define a duration-based habit, record daily performance, and receive an adjusted target for the following week.
 
-## Development Approach
-
-This project is being developed iteratively.
-
-I use AI-assisted development tools for learning unfamiliar technologies, debugging, code review, and exploring design alternatives while implementing, testing, and refining the project logic myself.
+The project combines a Python machine-learning backend with a simple web interface.
 
 ## Current Version
 
-The current prototype focuses on adaptive habit progression.
+The current prototype includes:
 
-Users define a habit and target duration, record their daily performance, and receive an adjusted target for the following week.
-
-At this stage, the project includes:
-
-- weekly progress tracking
-- synthetic user data for development
-- a machine-learning model that predicts weekly completion rates
+- weekly habit tracking
+- daily planned and actual duration tracking
+- synthetic user data generation
+- a machine-learning model for predicting weekly completion rates
 - a rule-based progression recommender
-- an HTML/CSS/JavaScript interface
+- a FastAPI backend
+- an HTML/CSS/JavaScript frontend
+- communication between the frontend and Python backend through an API
+
+The project is still under development.
 
 ## How It Works
 
-1. The user chooses a habit and target duration.
-2. The user records the actual duration completed each day.
-3. At the end of the week, the system calculates weekly performance.
-4. A machine-learning model predicts the expected completion rate.
-5. The progression recommender uses that prediction to adjust the next week's planned duration.
-6. The process repeats each week.
+1. The user enters a habit and a target duration.
+2. A weekly table is created for recording daily performance.
+3. The user enters the actual duration completed each day.
+4. At the end of the week, the frontend sends the week's data to the FastAPI backend.
+5. The backend calculates weekly performance.
+6. The system determines the target duration for the following week.
+7. The frontend displays the new target and creates the next week's tracking table.
 
 ## Machine Learning
 
-The current `CompletionPredictor` uses a Random Forest Regressor from scikit-learn.
+The `CompletionPredictor` uses a Random Forest Regressor from scikit-learn.
 
-The model is trained using synthetic behavioral data because real user data is not yet available.
+Because real user data is not yet available, the model is currently trained using synthetic behavioral data.
 
-Current model inputs include:
+The training data includes features such as:
 
 - planned duration
 - final duration goal
-- previous week's readiness
-- readiness from two weeks earlier
+- previous weekly readiness values
 
 The model predicts the expected weekly completion rate.
 
-The trained model is evaluated using a train/test split and Mean Absolute Error (MAE).
+The model is evaluated using a train/test split and Mean Absolute Error (MAE), and the trained model is saved using `joblib`.
 
 ## Progression Recommender
 
-The `ProgressionRecommender` currently uses a rule-based approach.
+The project also contains a rule-based `ProgressionRecommender`.
 
-Based on the predicted completion rate, it chooses a progression multiplier:
+It uses the predicted completion rate to determine how the planned duration should change.
 
-- below 50% → decrease target by 10%
+The current progression rules are:
+
+- below 50% predicted completion → decrease target by 10%
 - 50%–70% → keep the same target
 - 70%–85% → increase target by 5%
 - above 85% → increase target by 10%
 
-The recommender is intentionally simple at this stage.
+This rule-based approach is intentionally simple and may be improved as the project develops.
 
 ## Synthetic Data
 
-To develop the ML pipeline before real user data is available, the project generates simulated user behavior.
+Synthetic user behavior is generated to develop and test the machine-learning pipeline before real user data is available.
 
-Synthetic users currently vary by factors such as:
+The simulation includes variation in factors such as:
 
 - base readiness
-- goal difficulty
+- habit goals
 - weekly conditions
-- day-to-day variation
-- changes in planned duration
+- daily performance
+- planned duration
 
-The synthetic-data system is used as a development and testing environment, not as a substitute for real behavioral data.
+The synthetic data is intended for development and experimentation rather than as a replacement for real behavioral data.
 
-## Web Interface
+## Web Application
 
-The frontend is being developed with:
+The frontend is built with:
 
 - HTML
 - CSS
 - JavaScript
 
-The interface currently allows the user to:
+The backend is built with:
 
-- enter a habit and target duration
-- generate a weekly tracking table
-- record actual duration for each day
-- complete a week and continue to the next weekly section
+- Python
+- FastAPI
 
-The Finish Week button sends the seven daily durations to FastAPI's
-`POST /finish-week` endpoint. Week 1 calibrates the next target from readiness;
-later weeks use the saved `CompletionPredictor` and `ProgressionRecommender`.
-The returned target populates the next weekly table, and readiness is carried
-forward for the next request. Failed requests leave the week available to retry.
+When the user finishes a week, JavaScript sends the weekly data to the `/finish-week` API endpoint.
 
-### Run the web app
-
-From the repository root, with your Python environment activated:
-
-```bash
-pip install fastapi uvicorn scikit-learn joblib
-uvicorn api:app --reload
-```
-
-Open http://127.0.0.1:8000. FastAPI serves both the frontend and API; do not
-open the HTML directly or use a separate static server. The existing
-`completion_predictor.joblib` must be present in the repository root.
-Progress is held in the page's memory and resets on reload or when creating
-a new habit. No database is used.
+The backend processes the data and returns information including the weekly readiness and next recommended duration. The frontend then displays the recommendation and creates the next week's table.
 
 ## Project Structure
 
 ```text
 personal-development-ai/
-├── main.py
 ├── api.py
+├── main.py
 ├── train_model.py
 ├── ml_models.py
 ├── simulation.py
 ├── habit.py
 ├── dataset_builder.py
+├── completion_predictor.joblib
+├── requirements.txt
 ├── frontend/
 │   ├── index.html
 │   ├── style.css
@@ -137,3 +130,42 @@ personal-development-ai/
 ├── README.md
 └── .gitignore
 ```
+
+## Running the Project
+
+Create and activate a virtual environment, then install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start the web application with:
+
+```bash
+python -m uvicorn api:app --reload
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8000
+```
+
+## Technologies
+
+- Python
+- scikit-learn
+- FastAPI
+- joblib
+- HTML
+- CSS
+- JavaScript
+- Git / GitHub
+
+## Development Status
+
+This project is currently in progress.
+
+The current version demonstrates an end-to-end flow from user input in the browser to Python backend processing and generation of the following week's habit target.
+
+Future development may include improving the recommendation logic, testing with more realistic data, and expanding the application beyond the current prototype.
